@@ -1,0 +1,2 @@
+class KorbitConnectionFailed(Exception):
+    pass

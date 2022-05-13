@@ -1,4 +1,5 @@
 import sys
+from datetime import datetime
 
 import requests
 from requests.adapters import HTTPAdapter
@@ -58,3 +59,7 @@ def send_get_request(url, headers=None):
         print(f"caller: {frame_stack}")
 
         return None
+
+
+def utc_now_ms() -> int:
+    return int(datetime.utcnow().timestamp() * 1_000)
