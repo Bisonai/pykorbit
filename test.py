@@ -31,11 +31,12 @@ time.sleep(1)
 
 # pprint(r2, indent=4)
 
-k_ws = KorbitWebsocketEcho()
+k_ws = KorbitWebsocketEcho(
+    access_token=r.get("access_token"),
+)
 
 asyncio.run(
     k_ws.connect_and_subscribe(
-        r.get("access_token"),
         channels=[
             "ticker:btc_krw",
         ],

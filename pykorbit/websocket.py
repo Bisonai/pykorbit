@@ -1,18 +1,85 @@
 import json
 from abc import ABC, abstractstaticmethod
-from typing import List
+from typing import Any, Dict, List
 
 import websockets
 from websockets.client import WebSocketClientProtocol
 
-from .exception import KorbitConnectionFailed
+from .exception import (KorbitMessageNotAccepted,
+                        KorbitWebsocketMessageReceiveFailed)
 from .utils import utc_now_ms
 
 
 class KorbitWebsocket(ABC):
+    def __init__(self, access_token: str):
+        self.access_token = access_token
+        self.ws_uri = "wss://ws.korbit.co.kr/v1/user/push"
+        self.ws = None
+
+    @staticmethod
+    def _build_event_request(
+        access_token: str,
+        event: str,
+        channels: List[str],
+    ) -> Dict[str, Any]:
+        return json.dumps(
+            {
+                "accessToken": access_token,
+                "timestamp": utc_now_ms(),
+                "event": event,
+                "data": {
+                    "channels": channels,
+                },
+            }
+        )
+
+    @staticmethod
+    async def _test_event_response(
+        ws: WebSocketClientProtocol,
+        expected_event: str,
+    ) -> None:
+        """
+        Raises:
+            KorbitWebsocketMessageReceiveFailed
+            KorbitMessageNotAccepted
+        """
+        try:
+            recv_event = json.loads(await ws.recv()).get("event")
+        except Exception as e:
+            raise KorbitWebsocketMessageReceiveFailed from e
+
+        if recv_event != expected_event:
+            raise KorbitMessageNotAccepted(f"{recv_event} != {expected_event}")
+
+    @staticmethod
+    async def _send_request(
+        ws: WebSocketClientProtocol,
+        access_token: str,
+        event_request: str,
+        channels: List[str],
+    ) -> None:
+        """
+        Raises:
+            ConnectionClosed – when the connection is closed.
+            TypeError – if message doesn’t have a supported type.
+            KorbitWebsocketMessageReceiveFailed
+            KorbitMessageNotAccepted
+        """
+        request_fmt = KorbitWebsocket._build_event_request(
+            access_token,
+            event_request,
+            channels,
+        )
+
+        await ws.send(request_fmt)
+
+        await KorbitWebsocket._test_event_response(
+            ws,
+            expected_event=event_request,
+        )
+
     async def connect_and_subscribe(
         self,
-        access_token: str,
         channels: List[str],
     ):
         """
@@ -28,67 +95,47 @@ class KorbitWebsocket(ABC):
             InvalidHandshake – if the opening handshake fails.
             TimeoutError – if the opening handshake times out.
             ConnectionClosed – when the connection is closed.
-            TypeError – if message doesn’t have a supported type.
-            KorbitConnectionFailed - if connection to Korbit was not
-            successfull
         """
-        uri = "wss://ws.korbit.co.kr/v1/user/push"
-        async for ws in websockets.connect(
-            uri,
-            ping_interval=None,  # FIXME
-        ):
+        async for self.ws in websockets.connect(self.ws_uri):
             try:
-                subscribe_fmt = json.dumps(
-                    {
-                        "accessToken": access_token,
-                        "timestamp": utc_now_ms(),
-                        "event": "korbit:subscribe",
-                        "data": {
-                            "channels": channels,
-                        },
-                    }
-                )
-
-                await ws.send(subscribe_fmt)
-
-                await KorbitWebsocket._test_connection(
-                    ws,
+                await KorbitWebsocket._test_event_response(
+                    self.ws,
                     expected_event="korbit:connected",
                 )
 
-                await KorbitWebsocket._test_connection(
-                    ws,
-                    expected_event="korbit:subscribe",
-                )
+                await self.subscribe(channels)
 
-                await self.receive_loop(ws)
+                await self.receive_loop()
 
             except websockets.ConnectionClosed:
                 # Open new websocket connection if current connection
                 # was closed.
                 continue
 
-    @staticmethod
-    async def _test_connection(
-        ws: WebSocketClientProtocol,
-        expected_event: str,
-    ):
-        """
-        Raises:
-            KorbitConnectionFailed
-        """
-        recv_event = json.loads(await ws.recv()).get("event")
-        if recv_event != expected_event:
-            raise KorbitConnectionFailed(f"{recv_event} != {expected_event}")
+    async def subscribe(self, channels: List[str]) -> None:
+        await self._send_request(
+            self.ws,
+            self.access_token,
+            "korbit:subscribe",
+            channels,
+        )
 
-    async def receive_loop(self, ws: WebSocketClientProtocol) -> None:
+    async def unsubscribe(self, channels: List[str]) -> None:
+        await self._send_request(
+            self.ws,
+            self.access_token,
+            "korbit:unsubscribe",
+            channels,
+        )
+
+    async def receive_loop(self) -> None:
         """Process every incoming message with `worker` method.
 
         Raises:
             ConnectionClosed – when the connection is closed.
             RuntimeError – if two coroutines call recv() concurrently.
         """
-        async for msg in ws:
+        async for msg in self.ws:
             await self.worker(msg)
 
     @abstractstaticmethod
