@@ -1,32 +1,30 @@
-import pykorbit
+import os
+import time
+from pprint import pprint
 
-#-----------------------------------------------------------------------------------------------------------------------
-#  Public API
-#-----------------------------------------------------------------------------------------------------------------------
-print(pykorbit.get_current_price("BTC"))
-print(pykorbit.get_market_detail("BTC"))
-print(pykorbit.get_orderbook("BTC"))
-print(pykorbit.get_transaction_data("BTC"))
-print(pykorbit.get_constants())
+from dotenv import load_dotenv
 
-#-----------------------------------------------------------------------------------------------------------------------
-# Private API
-#-----------------------------------------------------------------------------------------------------------------------
-f = open("keys.csv")
-lines = f.readlines()
-f.close()
-key = lines[1].split(',')[0]
-secret = lines[1].split(',')[1]
-korbit = pykorbit.Korbit("your-email@gmail.com", "your-pass-word", key, secret)
+from pykorbit.authentication import KorbitAuthentication
 
-# 주문 제약 조건
-print(korbit._get_tick_size("BTC"))
-print(korbit._get_quantity_min_max("BTC"))
-print(korbit._get_price_min_max("BTC"))
+load_dotenv()
+client_id = os.environ.get("korbit_client_id")
+client_secret = os.environ.get("korbit_client_secret")
 
-#-----------------------------------------------------------------------------------------------------------------------
-# history
-#-----------------------------------------------------------------------------------------------------------------------
-print(pykorbit.get_ohlc("BTC", start="2018-02-01", end="2018-02-03"))
-print(pykorbit.get_ohlc("BTC", period=5))
-print(pykorbit.get_ohlc("BTC", end="2018-02-03", period=5))
+
+korbit = KorbitAuthentication()
+r = korbit.issue_access_token(
+    client_id=client_id,
+    client_secret=client_secret,
+)
+
+pprint(r, indent=4)
+
+time.sleep(1)
+
+r2 = korbit.renew_access_token(
+    client_id=client_id,
+    client_secret=client_secret,
+    refresh_token=r.get("refresh_token"),
+)
+
+pprint(r2, indent=4)
