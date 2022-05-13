@@ -1,3 +1,4 @@
+import logging
 from typing import Dict
 
 from .utils import send_post_request
@@ -22,6 +23,7 @@ class KorbitAuthentication:
             "grant_type": "client_credentials",
         }
 
+        logging.debug("Issue access token")
         contents = send_post_request(url, data=data)
 
         if isinstance(contents, dict):
@@ -55,6 +57,7 @@ class KorbitAuthentication:
             "refresh_token": refresh_token,
         }
 
+        logging.debug("Renew access token")
         contents = send_post_request(
             url,
             data=data,
