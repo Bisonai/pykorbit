@@ -10,7 +10,7 @@ from .utils import utc_now_ms
 
 
 class KorbitWebsocket(ABC):
-    async def connect_and_receive(
+    async def connect_and_subscribe(
         self,
         access_token: str,
         channels: List[str],
