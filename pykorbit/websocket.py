@@ -1,68 +1,96 @@
-import datetime
-import websockets
-import asyncio
 import json
-import uuid
-import multiprocessing as mp
+from abc import ABC, abstractstaticmethod
+from typing import List
+
+import websockets
+from websockets.client import WebSocketClientProtocol
+
+from .exception import KorbitConnectionFailed
+from .utils import utc_now_ms
 
 
-class WebSocketManager(mp.Process):
-    def __init__(self, channels: list, qsize: int=1000):
-        super().__init__()
-        self.__q = mp.Queue(qsize)
-        self.alive = False
-        self.type = type
-        self.channels = channels 
+class KorbitWebsocket(ABC):
+    async def connect_and_receive(
+        self,
+        access_token: str,
+        channels: List[str],
+    ):
+        """
+        Connect to websocket, detect if connection was established,
+        start receiving messages and and process them with `worker`
+        method.
 
-    async def __connect_socket(self):
+        Websocket is automatically closed on exiting this method and
+        recovered if connection is corrupted.
+
+        Raises
+            InvalidURI – if uri isn’t a valid WebSocket URI.
+            InvalidHandshake – if the opening handshake fails.
+            TimeoutError – if the opening handshake times out.
+            ConnectionClosed – when the connection is closed.
+            TypeError – if message doesn’t have a supported type.
+            KorbitConnectionFailed - if connection to Korbit was not
+            successfull
+        """
         uri = "wss://ws.korbit.co.kr/v1/user/push"
-        async with websockets.connect(uri, ping_interval=None) as websocket:
-            now = datetime.datetime.now()
-            timestamp = int(now.timestamp() * 1000)
-            subscribe_fmt = {
-                "accessToken": None, 
-                "timestamp": timestamp, 
-                "event": "korbit:subscribe",
-                "data": {
-                    "channels": self.channels 
-                }
-            }
-            await websocket.send(json.dumps(subscribe_fmt))
-            recv_data = await websocket.recv()
-            recv_data = json.loads(recv_data)
-            assert(recv_data['event'] == 'korbit:connected')
+        async for ws in websockets.connect(
+            uri,
+            ping_interval=None,  # FIXME
+        ):
+            try:
+                subscribe_fmt = json.dumps(
+                    {
+                        "accessToken": access_token,
+                        "timestamp": utc_now_ms(),
+                        "event": "korbit:subscribe",
+                        "data": {
+                            "channels": channels,
+                        },
+                    }
+                )
 
-            recv_data = await websocket.recv()
-            recv_data = json.loads(recv_data)
-            assert(recv_data['event'] == 'korbit:subscribe')
+                await ws.send(subscribe_fmt)
 
-            while self.alive:
-                recv_data = await websocket.recv()
-                self.__q.put(json.loads(recv_data))
+                await KorbitWebsocket._test_connection(
+                    ws,
+                    expected_event="korbit:connected",
+                )
 
-    def run(self):
-        self.__aloop = asyncio.get_event_loop()
-        self.__aloop.run_until_complete(self.__connect_socket())
+                await KorbitWebsocket._test_connection(
+                    ws,
+                    expected_event="korbit:subscribe",
+                )
 
-    def get(self):
-        if self.alive == False:
-            self.alive = True
-            self.start()
-        return self.__q.get()
+                await self.receive_loop(ws)
 
-    def terminate(self):
-        self.alive = False
-        super().terminate()
+            except websockets.ConnectionClosed:
+                # Open new websocket connection if current connection
+                # was closed.
+                continue
 
+    @staticmethod
+    async def _test_connection(
+        ws: WebSocketClientProtocol,
+        expected_event: str,
+    ):
+        """
+        Raises:
+            KorbitConnectionFailed
+        """
+        recv_event = json.loads(await ws.recv()).get("event")
+        if recv_event != expected_event:
+            raise KorbitConnectionFailed(f"{recv_event} != {expected_event}")
 
-if __name__ == "__main__":
-    # channels
-    # ticker
-    # orderbook
-    # transation
-    # https://apidocs.korbit.co.kr/ko/#2a5edfe20c 
-    wm = WebSocketManager(["ticker:btc_krw"])
-    for i in range(10):
-        data = wm.get()
-        print(data)
-    wm.terminate()
+    async def receive_loop(self, ws: WebSocketClientProtocol) -> None:
+        """Process every incoming message with `worker` method.
+
+        Raises:
+            ConnectionClosed – when the connection is closed.
+            RuntimeError – if two coroutines call recv() concurrently.
+        """
+        async for msg in ws:
+            await self.worker(msg)
+
+    @abstractstaticmethod
+    async def worker(msg: str) -> None:
+        raise NotImplementedError
