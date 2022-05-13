@@ -1,17 +1,30 @@
 import json
+import logging
 from abc import ABC, abstractstaticmethod
-from typing import Any, Dict, List
+from typing import Any, Dict, List, Optional
 
 import websockets
 from websockets.client import WebSocketClientProtocol
 
 from .exception import (KorbitMessageNotAccepted,
                         KorbitWebsocketMessageReceiveFailed)
+from .logging import LOGGING_LEVELS
 from .utils import utc_now_ms
 
 
 class KorbitWebsocket(ABC):
-    def __init__(self, access_token: str):
+    def __init__(
+        self,
+        access_token: str,
+        logging_level: Optional[str] = None,
+    ):
+        logging.basicConfig(
+            level=LOGGING_LEVELS.get(
+                logging_level,
+                logging.INFO,
+            ),
+        )
+
         self.access_token = access_token
         self.ws_uri = "wss://ws.korbit.co.kr/v1/user/push"
         self.ws = None
@@ -51,6 +64,8 @@ class KorbitWebsocket(ABC):
         if recv_event != expected_event:
             raise KorbitMessageNotAccepted(f"{recv_event} != {expected_event}")
 
+        logging.debug(f"Event {expected_event} OK")
+
     @staticmethod
     async def _send_request(
         ws: WebSocketClientProtocol,
@@ -71,6 +86,7 @@ class KorbitWebsocket(ABC):
             channels,
         )
 
+        logging.debug(f"Event {event_request}")
         await ws.send(request_fmt)
 
         await KorbitWebsocket._test_event_response(
@@ -135,6 +151,7 @@ class KorbitWebsocket(ABC):
             ConnectionClosed – when the connection is closed.
             RuntimeError – if two coroutines call recv() concurrently.
         """
+        logging.debug("Starting event loop")
         async for msg in self.ws:
             await self.worker(msg)
 
