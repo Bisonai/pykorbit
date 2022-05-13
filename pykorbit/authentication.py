@@ -13,7 +13,7 @@ class KorbitAuthentication:
         Issue an access token. Used only for the first connection.
 
         Raises:
-          ValueError
+            ValueError
         """
         url = "https://api.korbit.co.kr/v1/oauth2/access_token"
         data = {
@@ -45,7 +45,7 @@ class KorbitAuthentication:
         Update `access_token` using `refresh_token`.
 
         Raises:
-          ValueError
+            ValueError
         """
         url = "https://api.korbit.co.kr/v1/oauth2/access_token"
         data = {
