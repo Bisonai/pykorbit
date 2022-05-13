@@ -34,7 +34,7 @@ time.sleep(1)
 k_ws = KorbitWebsocketEcho()
 
 asyncio.run(
-    k_ws.connect_and_receive(
+    k_ws.connect_and_subscribe(
         r.get("access_token"),
         channels=[
             "ticker:btc_krw",
