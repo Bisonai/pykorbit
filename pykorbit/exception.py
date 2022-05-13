@@ -1,2 +1,6 @@
-class KorbitConnectionFailed(Exception):
+class KorbitMessageNotAccepted(Exception):
+    pass
+
+
+class KorbitWebsocketMessageReceiveFailed(Exception):
     pass
