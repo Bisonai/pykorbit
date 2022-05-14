@@ -1,0 +1,2 @@
+recursive-include pykorbit *.py
+include README.md
