@@ -39,11 +39,11 @@ cp .env.example .env
 
 ### Methods
 
-* `pykorbit.KorbitAuthentication`
-* `pykorbit.KorbitRestPublic`
-* `pykorbit.KorbitGeneral`
-* `pykorbit.KorbitWallet`
-* `pykorbit.KorbitWebsocket`
+* [`pykorbit.KorbitAuthentication`](https://github.com/Bisonai/pykorbit#pykorbitkorbitauthentication)
+* [`pykorbit.KorbitRestPublic`](https://github.com/Bisonai/pykorbit#pykorbitkorbitrestpublic)
+* [`pykorbit.KorbitGeneral`](https://github.com/Bisonai/pykorbit#korbitgeneral)
+* [`pykorbit.KorbitWallet`](https://github.com/Bisonai/pykorbit#pykorbitkorbitwallet)
+* [`pykorbit.KorbitWebsocket`](https://github.com/Bisonai/pykorbit#pykorbitkorbitwebsocketpublic)
 
 ### `pykorbit.KorbitAuthentication`
 
@@ -165,7 +165,7 @@ DEPRECATED
 
 Get all currency pairs that can be traded.
 
-### `KorbitGeneral`
+### `pykorbit.KorbitGeneral`
 
 #### `pykorbit.KorbitGeneral.user_balances(access_token: str) -> Dict[str, Any]`
 
