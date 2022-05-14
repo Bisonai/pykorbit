@@ -45,11 +45,12 @@ def send_post_request(url, headers=None, data=None):
         return None
 
 
-def send_get_request(url, headers=None):
+def send_get_request(url, headers=None, params=None):
     try:
         resp = requests_retry_session().get(
             url,
             headers=headers,
+            params=params,
         )
         return resp.json()
     except Exception as x:
