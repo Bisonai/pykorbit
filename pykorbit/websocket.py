@@ -94,10 +94,39 @@ class KorbitWebsocket(ABC):
             expected_event=event_request,
         )
 
+    @staticmethod
+    def _build_channels(
+        pairs: List[str],
+        channel_name: str,
+    ) -> List[str]:
+        assert len(list(filter(lambda p: ":" in p, pairs))) == 0
+        return list(map(lambda p: f"{channel_name}:{p}", pairs))
+
+    async def connect_and_subscribe_ticker(
+        self,
+        pairs: List[str],
+    ) -> None:
+        channels = self._build_channels(pairs, "ticker")
+        await self.connect_and_subscribe(channels=channels)
+
+    async def connect_and_subscribe_orderbook(
+        self,
+        pairs: List[str],
+    ) -> None:
+        channels = self._build_channels(pairs, "orderbook")
+        await self.connect_and_subscribe(channels=channels)
+
+    async def connect_and_subscribe_transaction(
+        self,
+        pairs: List[str],
+    ) -> None:
+        channels = self._build_channels(pairs, "transaction")
+        await self.connect_and_subscribe(channels=channels)
+
     async def connect_and_subscribe(
         self,
         channels: List[str],
-    ):
+    ) -> None:
         """
         Connect to websocket, detect if connection was established,
         start receiving messages and and process them with `worker`
