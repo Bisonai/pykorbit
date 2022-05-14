@@ -4,3 +4,7 @@ class KorbitMessageNotAccepted(Exception):
 
 class KorbitWebsocketMessageReceiveFailed(Exception):
     pass
+
+
+class KorbitUnexpectedResponse(Exception):
+    pass

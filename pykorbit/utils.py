@@ -1,4 +1,3 @@
-import sys
 from datetime import datetime
 
 import requests
@@ -28,38 +27,30 @@ def requests_retry_session(
     return session
 
 
-def send_post_request(url, headers=None, data=None):
-    try:
-        resp = requests_retry_session().post(
-            url,
-            headers=headers,
-            data=data,
-        )
-        return resp.json()
-    except Exception as x:
-        # FIXME
-        frame_stack = sys._getframe(2).f_code.co_name
-        print(f"send post request failed {x.__class__.__name__}")
-        print(f"caller: {frame_stack}")
-
-        return None
+def send_post_request(
+    url,
+    headers=None,
+    data=None,
+):
+    resp = requests_retry_session().post(
+        url,
+        headers=headers,
+        data=data,
+    )
+    return resp.json()
 
 
-def send_get_request(url, headers=None, params=None):
-    try:
-        resp = requests_retry_session().get(
-            url,
-            headers=headers,
-            params=params,
-        )
-        return resp.json()
-    except Exception as x:
-        # FIXME
-        frame_stack = sys._getframe(2).f_code.co_name
-        print(f"send get request failed {x.__class__.__name__}")
-        print(f"caller: {frame_stack}")
-
-        return None
+def send_get_request(
+    url,
+    headers=None,
+    params=None,
+):
+    resp = requests_retry_session().get(
+        url,
+        headers=headers,
+        params=params,
+    )
+    return resp.json()
 
 
 def build_bearer_token_header(access_token: str):
