@@ -21,6 +21,7 @@ class KorbitRestPublic:
 
     def detailed_ticker(currency_pair: str) -> Dict[str, Any]:
         """https://apidocs.korbit.co.kr/#detailed-ticker
+
         Example response:
             {
                 "timestamp": 1558590089274,
@@ -36,6 +37,21 @@ class KorbitRestPublic:
             }
         """
         url = "https://api.korbit.co.kr/v1/ticker/detailed"
+        params = [("currency_pair", currency_pair)]
+        return send_get_request(url, params=params)
+
+    @staticmethod
+    def orderbook(currency_pair: str) -> Dict[str, Any]:
+        """https://apidocs.korbit.co.kr/#orderbook
+
+        Example response:
+            {
+                "timestamp" : 1386135077000,
+                "bids" : [["1100000", "0.0103918", "1"], ["1000000", "0.01000000", "1"], ... ],
+                "asks" : [["569000", "0.50000000", "1"], ["568500", "2.00000000", "1"], ... ]
+            }
+        """
+        url = "https://api.korbit.co.kr/v1/orderbook"
         params = [("currency_pair", currency_pair)]
         return send_get_request(url, params=params)
 
