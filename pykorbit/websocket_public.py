@@ -54,8 +54,8 @@ class KorbitWebsocketPublic(ABC):
     ) -> None:
         """
         Raises:
-            KorbitWebsocketMessageReceiveFailed
-            KorbitMessageNotAccepted
+          KorbitWebsocketMessageReceiveFailed
+          KorbitMessageNotAccepted
         """
         try:
             recv_event = json.loads(await ws.recv()).get("event")
@@ -76,10 +76,10 @@ class KorbitWebsocketPublic(ABC):
     ) -> None:
         """
         Raises:
-            ConnectionClosed – when the connection is closed.
-            TypeError – if message doesn’t have a supported type.
-            KorbitWebsocketMessageReceiveFailed
-            KorbitMessageNotAccepted
+          ConnectionClosed – when the connection is closed.
+          TypeError – if message doesn’t have a supported type.
+          KorbitWebsocketMessageReceiveFailed
+          KorbitMessageNotAccepted
         """
         request_fmt = KorbitWebsocketPublic._build_event_request(
             access_token,
@@ -136,11 +136,11 @@ class KorbitWebsocketPublic(ABC):
         Websocket is automatically closed on exiting this method and
         recovered if connection is corrupted.
 
-        Raises
-            InvalidURI – if uri isn’t a valid WebSocket URI.
-            InvalidHandshake – if the opening handshake fails.
-            TimeoutError – if the opening handshake times out.
-            ConnectionClosed – when the connection is closed.
+        Raises:
+          InvalidURI – if uri isn’t a valid WebSocket URI.
+          InvalidHandshake – if the opening handshake fails.
+          TimeoutError – if the opening handshake times out.
+          ConnectionClosed – when the connection is closed.
         """
         async for self.ws in websockets.connect(self.ws_uri):
             try:
@@ -178,8 +178,8 @@ class KorbitWebsocketPublic(ABC):
         """Process every incoming message with `worker` method.
 
         Raises:
-            ConnectionClosed – when the connection is closed.
-            RuntimeError – if two coroutines call recv() concurrently.
+          ConnectionClosed – when the connection is closed.
+          RuntimeError – if two coroutines call recv() concurrently.
         """
         logging.debug("Starting event loop")
         async for msg in self.ws:

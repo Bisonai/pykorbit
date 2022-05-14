@@ -1,3 +1,4 @@
+# https://apidocs.korbit.co.kr/#public
 import logging
 from typing import Any, Dict, List
 
@@ -16,11 +17,11 @@ class KorbitRestPublic:
     def ticker(currency_pair: str) -> Dict[str, Any]:
         """https://apidocs.korbit.co.kr/#ticker
 
-        Example response:
-            {
-              "timestamp": 1389678052000,
-              "last": "569000"
-            }
+        Response:
+          {
+            "timestamp": 1389678052000,
+            "last": "569000"
+          }
         """
         logging.debug("Ticker")
 
@@ -31,19 +32,19 @@ class KorbitRestPublic:
     def detailed_ticker(currency_pair: str) -> Dict[str, Any]:
         """https://apidocs.korbit.co.kr/#detailed-ticker
 
-        Example response:
-            {
-              "timestamp": 1558590089274,
-              "last": "9198500",
-              "open": "9500000",
-              "bid": "9192500",
-              "ask": "9198000",
-              "low": "9171500",
-              "high": "9599000",
-              "volume": "1539.18571988",
-              "change": "-301500",
-              "changePercent": "-3.17"
-            }
+        Response:
+          {
+            "timestamp": 1558590089274,
+            "last": "9198500",
+            "open": "9500000",
+            "bid": "9192500",
+            "ask": "9198000",
+            "low": "9171500",
+            "high": "9599000",
+            "volume": "1539.18571988",
+            "change": "-301500",
+            "changePercent": "-3.17"
+          }
         """
         logging.debug("Detailed Ticker")
 
@@ -55,12 +56,12 @@ class KorbitRestPublic:
     def orderbook(currency_pair: str) -> Dict[str, Any]:
         """https://apidocs.korbit.co.kr/#orderbook
 
-        Example response:
-            {
-              "timestamp" : 1386135077000,
-              "bids" : [["1100000", "0.0103918", "1"], ["1000000", "0.01000000", "1"], ... ],
-              "asks" : [["569000", "0.50000000", "1"], ["568500", "2.00000000", "1"], ... ]
-            }
+        Response:
+          {
+            "timestamp" : 1386135077000,
+            "bids" : [["1100000", "0.0103918", "1"], ["1000000", "0.01000000", "1"], ... ],
+            "asks" : [["569000", "0.50000000", "1"], ["568500", "2.00000000", "1"], ... ]
+          }
         """
         logging.debug("Orderbook")
 
@@ -75,24 +76,24 @@ class KorbitRestPublic:
     ) -> List[Dict]:
         """https://apidocs.korbit.co.kr/#list-of-filled-orders
 
-        Examples response:
-            [
-              {
-                "timestamp": 1389678052000,
-                "tid": "22546",
-                "price": "569000",
-                "amount": "0.01000000",
-                "type": "buy"
-              },
-              {
-               "timestamp": 1389678017000,
-               "tid": "22545",
-               "price": "580000",
-               "amount": "0.01000000",
-               "type": "sell"
-             }
-              ...
-            ]
+        Response:
+          [
+            {
+              "timestamp": 1389678052000,
+              "tid": "22546",
+              "price": "569000",
+              "amount": "0.01000000",
+              "type": "buy"
+            },
+            {
+             "timestamp": 1389678017000,
+             "tid": "22545",
+             "price": "580000",
+             "amount": "0.01000000",
+             "type": "sell"
+           }
+            ...
+          ]
         """
         logging.debug("List of Filled Orders")
         assert time in _ALLOWED_TIMES
@@ -105,11 +106,11 @@ class KorbitRestPublic:
 
     @staticmethod
     def constants() -> Dict:
-        """
+        """https://apidocs.korbit.co.kr/#constants-deprecated
         DEPRECATED
 
-        Raises
-            KorbitUnexpectedResponse
+        Raises:
+          KorbitUnexpectedResponse
         """
         logging.debug("Constants")
 

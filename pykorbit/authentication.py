@@ -10,11 +10,10 @@ class KorbitAuthentication:
         client_id: str,
         client_secret: str,
     ) -> Dict[str, str]:
-        """
-        Issue an access token. Used only for the first connection.
+        """https://apidocs.korbit.co.kr/#direct-authentication
 
         Raises:
-            ValueError
+          ValueError
         """
         url = "https://api.korbit.co.kr/v1/oauth2/access_token"
         data = {
@@ -43,11 +42,10 @@ class KorbitAuthentication:
         client_secret: str,
         refresh_token: str,
     ) -> Dict[str, str]:
-        """
-        Update `access_token` using `refresh_token`.
+        """https://apidocs.korbit.co.kr/#refreshing-access-token
 
         Raises:
-            ValueError
+          ValueError
         """
         url = "https://api.korbit.co.kr/v1/oauth2/access_token"
         data = {
