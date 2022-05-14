@@ -16,7 +16,7 @@ from .utils import utc_now_ms
 class KorbitWebsocket(ABC):
     def __init__(
         self,
-        access_token: str,
+        access_token: Optional[str] = None,
         logging_level: Optional[str] = None,
     ):
         logging.basicConfig(
