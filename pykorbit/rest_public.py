@@ -35,7 +35,7 @@ class KorbitRestPublic:
                 "changePercent": "-3.17"
             }
         """
-        url = "https://api.korbit.co.kr/v1/ticker"
+        url = "https://api.korbit.co.kr/v1/ticker/detailed"
         params = [("currency_pair", currency_pair)]
         return send_get_request(url, params=params)
 
