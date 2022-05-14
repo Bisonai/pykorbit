@@ -13,7 +13,7 @@ from .logging import LOGGING_LEVELS
 from .utils import utc_now_ms
 
 
-class KorbitWebsocket(ABC):
+class KorbitWebsocketPublic(ABC):
     def __init__(
         self,
         access_token: Optional[str] = None,
@@ -81,7 +81,7 @@ class KorbitWebsocket(ABC):
             KorbitWebsocketMessageReceiveFailed
             KorbitMessageNotAccepted
         """
-        request_fmt = KorbitWebsocket._build_event_request(
+        request_fmt = KorbitWebsocketPublic._build_event_request(
             access_token,
             event_request,
             channels,
@@ -90,7 +90,7 @@ class KorbitWebsocket(ABC):
         logging.debug(f"Event {event_request}")
         await ws.send(request_fmt)
 
-        await KorbitWebsocket._test_event_response(
+        await KorbitWebsocketPublic._test_event_response(
             ws,
             expected_event=event_request,
         )
@@ -144,7 +144,7 @@ class KorbitWebsocket(ABC):
         """
         async for self.ws in websockets.connect(self.ws_uri):
             try:
-                await KorbitWebsocket._test_event_response(
+                await KorbitWebsocketPublic._test_event_response(
                     self.ws,
                     expected_event="korbit:connected",
                 )

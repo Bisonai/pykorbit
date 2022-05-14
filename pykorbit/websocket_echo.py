@@ -1,13 +1,13 @@
 import json
 from typing import Optional
 
-from .websocket import KorbitWebsocket
+from .websocket_public import KorbitWebsocketPublic
 
 
-class KorbitWebsocketEcho(KorbitWebsocket):
+class KorbitWebsocketEcho(KorbitWebsocketPublic):
     def __init__(
         self,
-        access_token: str,
+        access_token: Optional[str] = None,
         logging_level: Optional[str] = None,
     ):
         super().__init__(
