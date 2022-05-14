@@ -9,7 +9,7 @@ from websockets.client import WebSocketClientProtocol
 
 from .exception import (KorbitMessageNotAccepted,
                         KorbitWebsocketMessageReceiveFailed)
-from .logging import LOGGING_LEVELS
+from .logging import _ALLOWED_LOGGING_LEVELS
 from .utils import utc_now_ms
 
 
@@ -20,7 +20,7 @@ class KorbitWebsocketPublic(ABC):
         logging_level: Optional[str] = None,
     ):
         logging.basicConfig(
-            level=LOGGING_LEVELS.get(
+            level=_ALLOWED_LOGGING_LEVELS.get(
                 logging_level,
                 logging.INFO,
             ),

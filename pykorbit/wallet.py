@@ -4,7 +4,7 @@ from typing import Dict, List, Optional
 
 from .utils import build_bearer_token_header, send_get_request
 
-TRANSFER_TYPES = (
+_ALLOWED_TRANSFER_TYPES = (
     "deposit",
     "withdrawal",
 )
@@ -59,7 +59,7 @@ class KorbitWallet:
             params.append(("currency", currency))
 
         if type:
-            assert type in TRANSFER_TYPES
+            assert type in _ALLOWED_TRANSFER_TYPES
             params.append(("type", type))
 
         return send_get_request(

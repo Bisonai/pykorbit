@@ -27,7 +27,11 @@ class KorbitRestPublic:
 
         url = "https://api.korbit.co.kr/v1/ticker"
         params = [("currency_pair", currency_pair)]
-        return send_get_request(url, params=params)
+
+        return send_get_request(
+            url,
+            params=params,
+        )
 
     def detailed_ticker(currency_pair: str) -> Dict[str, Any]:
         """https://apidocs.korbit.co.kr/#detailed-ticker
@@ -50,7 +54,11 @@ class KorbitRestPublic:
 
         url = "https://api.korbit.co.kr/v1/ticker/detailed"
         params = [("currency_pair", currency_pair)]
-        return send_get_request(url, params=params)
+
+        return send_get_request(
+            url,
+            params=params,
+        )
 
     @staticmethod
     def orderbook(currency_pair: str) -> Dict[str, Any]:
@@ -67,7 +75,11 @@ class KorbitRestPublic:
 
         url = "https://api.korbit.co.kr/v1/orderbook"
         params = [("currency_pair", currency_pair)]
-        return send_get_request(url, params=params)
+
+        return send_get_request(
+            url,
+            params=params,
+        )
 
     @staticmethod
     def list_of_filled_orders(
@@ -96,16 +108,21 @@ class KorbitRestPublic:
           ]
         """
         logging.debug("List of Filled Orders")
+
         assert time in _ALLOWED_TIMES
         url = "https://api.korbit.co.kr/v1/transactions"
         params = [
             ("currency_pair", currency_pair),
             ("time", time),
         ]
-        return send_get_request(url, params=params)
+
+        return send_get_request(
+            url,
+            params=params,
+        )
 
     @staticmethod
-    def constants() -> Dict:
+    def constants() -> Dict[str, Any]:
         """https://apidocs.korbit.co.kr/#constants-deprecated
         DEPRECATED
 

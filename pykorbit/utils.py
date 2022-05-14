@@ -1,4 +1,5 @@
 from datetime import datetime
+from typing import Dict, List, Union
 
 import requests
 from requests.adapters import HTTPAdapter
@@ -9,7 +10,7 @@ def requests_retry_session(
     retries=5,
     backoff_factor=0.3,
     status_forcelist=(500, 502, 504),
-):
+) -> requests.Session:
     session = requests.Session()
 
     retry = Retry(
@@ -31,7 +32,7 @@ def send_post_request(
     url,
     headers=None,
     data=None,
-):
+) -> Union[Dict, List]:
     resp = requests_retry_session().post(
         url,
         headers=headers,
@@ -44,7 +45,7 @@ def send_get_request(
     url,
     headers=None,
     params=None,
-):
+) -> Union[Dict, List]:
     resp = requests_retry_session().get(
         url,
         headers=headers,
@@ -53,7 +54,7 @@ def send_get_request(
     return resp.json()
 
 
-def build_bearer_token_header(access_token: str):
+def build_bearer_token_header(access_token: str) -> Dict[str, str]:
     return {"Authorization": "Bearer " + access_token}
 
 
