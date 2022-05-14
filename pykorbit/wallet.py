@@ -1,6 +1,6 @@
 # https://apidocs.korbit.co.kr/#private-wallet
 import logging
-from typing import List, Optional
+from typing import Dict, List, Optional
 
 from .utils import build_bearer_token_header, send_get_request
 
@@ -34,6 +34,28 @@ class KorbitWallet:
         if type:
             assert type in TRANSFER_TYPES
             params.append(("type", type))
+
+        return send_get_request(
+            url,
+            headers=headers,
+            params=params,
+        )
+
+    @staticmethod
+    def query_status_of_deposit_and_withdrawal(
+        access_token: str,
+        currency: str,
+        request_id: Optional[int] = None,
+    ) -> List[Dict]:
+        logging.debug("Query Status of Deposit and Withdrawal")
+
+        url = "https://api.korbit.co.kr/v1/user/coins/status"
+        headers = build_bearer_token_header(access_token)
+
+        params = [("type", type)]
+
+        if request_id:
+            params.append(("id", request_id))
 
         return send_get_request(
             url,
