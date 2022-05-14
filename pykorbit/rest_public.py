@@ -121,3 +121,7 @@ class KorbitRestPublic:
             return response_echange
         else:
             raise KorbitUnexpectedResponse(response_echange)
+
+    @staticmethod
+    def currency_pairs() -> List[str]:
+        return list(KorbitRestPublic.constants().keys())
