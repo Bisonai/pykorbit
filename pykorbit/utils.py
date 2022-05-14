@@ -62,5 +62,9 @@ def send_get_request(url, headers=None, params=None):
         return None
 
 
+def build_bearer_token_header(access_token: str):
+    return {"Authorization": "Bearer " + access_token}
+
+
 def utc_now_ms() -> int:
     return int(datetime.utcnow().timestamp() * 1_000)
