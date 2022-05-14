@@ -1,0 +1,12 @@
+{
+  "timestamp": 1652504296115,
+  "event": "korbit:push-transaction",
+  "data": {
+    "channel": "transaction",
+    "currency_pair": "btc_krw",
+    "timestamp": 1652504295928,
+    "price": "39000000",
+    "amount": "0.01189773",
+    "taker": "buy"
+  }
+}
