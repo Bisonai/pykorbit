@@ -1,3 +1,4 @@
+import logging
 from typing import Any, Dict, List
 
 from .exception import KorbitUnexpectedResponse
@@ -21,6 +22,8 @@ class KorbitRestPublic:
               "last": "569000"
             }
         """
+        logging.debug("Ticker")
+
         url = "https://api.korbit.co.kr/v1/ticker"
         params = [("currency_pair", currency_pair)]
         return send_get_request(url, params=params)
@@ -42,6 +45,8 @@ class KorbitRestPublic:
               "changePercent": "-3.17"
             }
         """
+        logging.debug("Detailed Ticker")
+
         url = "https://api.korbit.co.kr/v1/ticker/detailed"
         params = [("currency_pair", currency_pair)]
         return send_get_request(url, params=params)
@@ -57,6 +62,8 @@ class KorbitRestPublic:
               "asks" : [["569000", "0.50000000", "1"], ["568500", "2.00000000", "1"], ... ]
             }
         """
+        logging.debug("Orderbook")
+
         url = "https://api.korbit.co.kr/v1/orderbook"
         params = [("currency_pair", currency_pair)]
         return send_get_request(url, params=params)
@@ -87,6 +94,7 @@ class KorbitRestPublic:
               ...
             ]
         """
+        logging.debug("List of Filled Orders")
         assert time in _ALLOWED_TIMES
         url = "https://api.korbit.co.kr/v1/transactions"
         params = [
@@ -98,9 +106,13 @@ class KorbitRestPublic:
     @staticmethod
     def constants() -> Dict:
         """
+        DEPRECATED
+
         Raises
             KorbitUnexpectedResponse
         """
+        logging.debug("Constants")
+
         url = "https://api.korbit.co.kr/v1/constants"
         response = send_get_request(url)
         response_echange = response.get("exchange")
