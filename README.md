@@ -30,6 +30,15 @@ cp .env.example .env
 
 ## Documentation
 
+### Exceptions
+
+* `pykorbit.KorbitMessageNotAccepted`
+* `pykorbit.KorbitWebsocketMessageReceiveFailed`
+* `pykorbit.KorbitUnexpectedResponse`
+
+
+### Methods
+
 * `pykorbit.KorbitAuthentication`
 * `pykorbit.KorbitRestPublic`
 * `pykorbit.KorbitGeneral`
