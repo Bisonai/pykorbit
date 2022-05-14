@@ -1,3 +1,4 @@
+# https://apidocs.korbit.co.kr/#public-websocket
 import json
 import logging
 from abc import ABC, abstractstaticmethod

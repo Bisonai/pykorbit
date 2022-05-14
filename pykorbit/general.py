@@ -1,3 +1,4 @@
+# https://apidocs.korbit.co.kr/#private-general
 import logging
 from typing import Any, Dict, List
 
@@ -7,6 +8,7 @@ from .utils import build_bearer_token_header, send_get_request
 class KorbitGeneral:
     @staticmethod
     def user_balances(access_token: str) -> Dict[str, Any]:
+        # https://apidocs.korbit.co.kr/#user-balances
         logging.debug("User Balances")
 
         url = "https://api.korbit.co.kr/v1/user/balances"
@@ -19,6 +21,7 @@ class KorbitGeneral:
 
     @staticmethod
     def transfer_account_info(access_token: str) -> Dict[str, Any]:
+        # https://apidocs.korbit.co.kr/#transfer-account-info
         logging.debug("Transfer Account Info")
 
         url = "https://api.korbit.co.kr/v1/user/accounts"
@@ -34,6 +37,7 @@ class KorbitGeneral:
         access_token: str,
         pair: List[str] = [],
     ) -> Dict[str, Any]:
+        # https://apidocs.korbit.co.kr/#trading-volume-and-fees
         logging.debug("Transfer Account Info")
 
         url = "https://api.korbit.co.kr/v1/user/volume"
