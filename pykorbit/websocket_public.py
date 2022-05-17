@@ -105,23 +105,32 @@ class KorbitWebsocketPublic(ABC):
 
     async def connect_and_subscribe_ticker(
         self,
-        pairs: List[str],
+        pairs: List[str] = [],
     ) -> None:
-        channels = self._build_channels(pairs, "ticker")
+        if pairs:
+            channels = self._build_channels(pairs, "ticker")
+        else:
+            channels = ["ticker"]
         await self.connect_and_subscribe(channels=channels)
 
     async def connect_and_subscribe_orderbook(
         self,
-        pairs: List[str],
+        pairs: List[str] = [],
     ) -> None:
-        channels = self._build_channels(pairs, "orderbook")
+        if pairs:
+            channels = self._build_channels(pairs, "orderbook")
+        else:
+            channels = ["orderbook"]
         await self.connect_and_subscribe(channels=channels)
 
     async def connect_and_subscribe_transaction(
         self,
-        pairs: List[str],
+        pairs: List[str] = [],
     ) -> None:
-        channels = self._build_channels(pairs, "transaction")
+        if pairs:
+            channels = self._build_channels(pairs, "transaction")
+        else:
+            channels = ["transaction"]
         await self.connect_and_subscribe(channels=channels)
 
     async def connect_and_subscribe(
