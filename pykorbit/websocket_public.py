@@ -1,7 +1,7 @@
 # https://apidocs.korbit.co.kr/#public-websocket
 import json
 import logging
-from abc import ABC, abstractstaticmethod
+from abc import ABC, abstractmethod
 from typing import Any, Dict, List, Optional
 
 import websockets
@@ -185,6 +185,6 @@ class KorbitWebsocketPublic(ABC):
         async for msg in self.ws:
             await self.worker(msg)
 
-    @abstractstaticmethod
-    async def worker(msg: str) -> None:
+    @abstractmethod
+    async def worker(self, msg: str) -> None:
         raise NotImplementedError

@@ -15,7 +15,6 @@ class KorbitWebsocketEcho(KorbitWebsocketPublic):
             logging_level=logging_level,
         )
 
-    @staticmethod
-    async def worker(msg: str) -> None:
+    async def worker(self, msg: str) -> None:
         msg = json.loads(msg)
         print(msg)
