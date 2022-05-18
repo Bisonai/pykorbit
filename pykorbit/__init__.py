@@ -17,5 +17,5 @@ from pykorbit.exception import (KorbitMessageNotAccepted,
                                 KorbitUnexpectedResponse,
                                 KorbitWebsocketMessageReceiveFailed)
 from pykorbit.rest_api import KorbitRestApi
-from pykorbit.wallet_api import KorbitWallet
+from pykorbit.wallet_api import KorbitWalletApi
 from pykorbit.websocket_api import KorbitWebsocketApi
