@@ -13,7 +13,7 @@ Classes
 from pykorbit.__metadata__ import __version__
 from pykorbit.authentication_api import KorbitAuthenticationApi
 from pykorbit.demo.websocket_echo import KorbitWebsocketEcho
-from pykorbit.exception import (KorbitMessageNotAccepted,
+from pykorbit.exception import (KorbitMessageNotAccepted, KorbitUnauthorized,
                                 KorbitUnexpectedResponse,
                                 KorbitWebsocketMessageReceiveFailed)
 from pykorbit.rest_api import KorbitRestApi
