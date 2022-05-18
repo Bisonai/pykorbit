@@ -1,3 +1,4 @@
+import asyncio
 import json
 from typing import Optional
 
@@ -11,3 +12,13 @@ class KorbitWebsocketEcho(KorbitWebsocketApi):
     async def worker(self, msg: str) -> None:
         msg = json.loads(msg)
         print(msg)
+
+
+if __name__ == "__main__":
+    ws = KorbitWebsocketEcho()
+
+    asyncio.run(
+        ws.connect_and_subscribe_ticker(
+            currency_pairs="btc_krw",
+        )
+    )
