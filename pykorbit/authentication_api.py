@@ -4,7 +4,7 @@ from typing import Dict, Union
 from .utils import send_post_request
 
 
-class KorbitAuthentication:
+class KorbitAuthenticationApi:
     @staticmethod
     def issue_access_token(
         client_id: str,

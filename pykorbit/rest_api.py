@@ -12,7 +12,7 @@ _ALLOWED_TIMES = (
 )
 
 
-class KorbitRestPublic:
+class KorbitRestApi:
     @staticmethod
     def ticker(currency_pair: str) -> Dict[str, Any]:
         """https://apidocs.korbit.co.kr/#ticker
@@ -142,4 +142,4 @@ class KorbitRestPublic:
 
     @staticmethod
     def currency_pairs() -> List[str]:
-        return list(KorbitRestPublic.constants().keys())
+        return list(KorbitRestApi.constants().keys())
