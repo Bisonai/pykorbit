@@ -14,11 +14,7 @@ from .utils import utc_now_ms
 
 
 class KorbitWebsocketPublic(ABC):
-    def __init__(
-        self,
-        access_token: Optional[str] = None,
-        logging_level: Optional[str] = None,
-    ):
+    def __init__(self, logging_level: Optional[str] = None):
         logging.basicConfig(
             level=_ALLOWED_LOGGING_LEVELS.get(
                 logging_level,
@@ -26,19 +22,16 @@ class KorbitWebsocketPublic(ABC):
             ),
         )
 
-        self.access_token = access_token
         self.ws_uri = "wss://ws.korbit.co.kr/v1/user/push"
         self.ws = None
 
     @staticmethod
     def _build_event_request(
-        access_token: str,
         event: str,
         channels: List[str],
     ) -> Dict[str, Any]:
         return json.dumps(
             {
-                "accessToken": access_token,
                 "timestamp": utc_now_ms(),
                 "event": event,
                 "data": {
@@ -70,7 +63,6 @@ class KorbitWebsocketPublic(ABC):
     @staticmethod
     async def _send_request(
         ws: WebSocketClientProtocol,
-        access_token: str,
         event_request: str,
         channels: List[str],
     ) -> None:
@@ -82,7 +74,6 @@ class KorbitWebsocketPublic(ABC):
           KorbitMessageNotAccepted
         """
         request_fmt = KorbitWebsocketPublic._build_event_request(
-            access_token,
             event_request,
             channels,
         )
@@ -165,12 +156,12 @@ class KorbitWebsocketPublic(ABC):
             except websockets.ConnectionClosed:
                 # Open new websocket connection if current connection
                 # was closed.
+                logging.error("Connection closed")
                 continue
 
     async def subscribe(self, channels: List[str]) -> None:
         await self._send_request(
             self.ws,
-            self.access_token,
             "korbit:subscribe",
             channels,
         )
@@ -178,7 +169,6 @@ class KorbitWebsocketPublic(ABC):
     async def unsubscribe(self, channels: List[str]) -> None:
         await self._send_request(
             self.ws,
-            self.access_token,
             "korbit:unsubscribe",
             channels,
         )
