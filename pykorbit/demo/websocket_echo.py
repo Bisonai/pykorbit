@@ -1,10 +1,10 @@
 import json
 from typing import Optional
 
-from .websocket_public import KorbitWebsocketPublic
+from pykorbit.websocket_api import KorbitWebsocketApi
 
 
-class KorbitWebsocketEcho(KorbitWebsocketPublic):
+class KorbitWebsocketEcho(KorbitWebsocketApi):
     def __init__(self, logging_level: Optional[str] = None):
         super().__init__(logging_level=logging_level)
 
