@@ -88,38 +88,41 @@ class KorbitWebsocketApi(ABC):
 
     @staticmethod
     def _build_channels(
-        pairs: List[str],
+        currency_pairs: List[str],
         channel_name: str,
     ) -> List[str]:
-        assert len(list(filter(lambda p: ":" in p, pairs))) == 0
-        return list(map(lambda p: f"{channel_name}:{p}", pairs))
+        if not isinstance(currency_pairs, list):
+            currency_pairs = [currency_pairs]
+
+        assert len(list(filter(lambda p: ":" in p, currency_pairs))) == 0
+        return list(map(lambda p: f"{channel_name}:{p}", currency_pairs))
 
     async def connect_and_subscribe_ticker(
         self,
-        pairs: List[str] = [],
+        currency_pairs: List[str] = [],
     ) -> None:
-        if pairs:
-            channels = self._build_channels(pairs, "ticker")
+        if currency_pairs:
+            channels = self._build_channels(currency_pairs, "ticker")
         else:
             channels = ["ticker"]
         await self.connect_and_subscribe(channels=channels)
 
     async def connect_and_subscribe_orderbook(
         self,
-        pairs: List[str] = [],
+        currency_pairs: List[str] = [],
     ) -> None:
-        if pairs:
-            channels = self._build_channels(pairs, "orderbook")
+        if currency_pairs:
+            channels = self._build_channels(currency_pairs, "orderbook")
         else:
             channels = ["orderbook"]
         await self.connect_and_subscribe(channels=channels)
 
     async def connect_and_subscribe_transaction(
         self,
-        pairs: List[str] = [],
+        currency_pairs: List[str] = [],
     ) -> None:
-        if pairs:
-            channels = self._build_channels(pairs, "transaction")
+        if currency_pairs:
+            channels = self._build_channels(currency_pairs, "transaction")
         else:
             channels = ["transaction"]
         await self.connect_and_subscribe(channels=channels)
