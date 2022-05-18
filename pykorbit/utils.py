@@ -5,6 +5,8 @@ import requests
 from requests.adapters import HTTPAdapter
 from urllib3.util.retry import Retry
 
+from .exception import KorbitUnauthorized
+
 
 def requests_retry_session(
     retries=5,
@@ -33,11 +35,19 @@ def send_post_request(
     headers=None,
     data=None,
 ) -> Union[Dict, List]:
+    """
+    Raises:
+      KorbitUnauthorized
+    """
     resp = requests_retry_session().post(
         url,
         headers=headers,
         data=data,
     )
+
+    if resp.status_code == 401:
+        raise KorbitUnauthorized(resp.text)
+
     return resp.json()
 
 
@@ -46,11 +56,19 @@ def send_get_request(
     headers=None,
     params=None,
 ) -> Union[Dict, List]:
+    """
+    Raises:
+      KorbitUnauthorized
+    """
     resp = requests_retry_session().get(
         url,
         headers=headers,
         params=params,
     )
+
+    if resp.status_code == 401:
+        raise KorbitUnauthorized(resp.text)
+
     return resp.json()
 
 

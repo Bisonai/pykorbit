@@ -8,3 +8,7 @@ class KorbitWebsocketMessageReceiveFailed(Exception):
 
 class KorbitUnexpectedResponse(Exception):
     pass
+
+
+class KorbitUnauthorized(Exception):
+    pass
