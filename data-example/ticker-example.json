@@ -1,0 +1,17 @@
+{
+    "timestamp": 1653105062268,
+    "event": "korbit:push-ticker",
+    "data": {
+        "channel": "ticker",
+        "currency_pair": "btc_krw",
+        "timestamp": 1653104967064,
+        "last": "37640000",
+        "open": "38685000",
+        "bid": "37639000",
+        "ask": "37640000",
+        "low": "37164000",
+        "high": "39111000",
+        "volume": "228.38894855",
+        "change": "-1045000"
+    }
+}
