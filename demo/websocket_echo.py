@@ -1,5 +1,6 @@
 import asyncio
 import json
+import sys
 from typing import Optional
 
 from pykorbit.websocket_api import KorbitWebsocketApi
@@ -11,7 +12,7 @@ class KorbitWebsocketEcho(KorbitWebsocketApi):
 
     async def worker(self, msg: str) -> None:
         msg = json.loads(msg)
-        print(msg)
+        json.dump(msg, sys.stdout)
 
 
 if __name__ == "__main__":
