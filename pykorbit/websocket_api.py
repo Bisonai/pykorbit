@@ -102,6 +102,19 @@ class KorbitWebsocketApi(ABC):
         self,
         currency_pairs: List[str] = [],
     ) -> None:
+        """
+        Ticker fields
+          timestamp     Unix timestamp in milliseconds of the last filled order.
+          last          Price of the last filled order.
+          open          First price in 24 hours.
+          bid           Best bid price.
+          ask           Best ask price.
+          low           Lowest price within the last 24 hours.
+          high          Highest price within the last 24 hours.
+          volume        Transaction volume within the last 24 hours.
+          change        The change in the last price from the OPEN price.
+          changePercent The rate of change in the last price from the OPEN price.
+        """
         if currency_pairs:
             channels = self._build_channels(currency_pairs, "ticker")
         else:
