@@ -1,4 +1,5 @@
 # https://apidocs.korbit.co.kr/#public-websocket
+import asyncio
 import json
 import logging
 from abc import ABC, abstractmethod
@@ -145,7 +146,16 @@ class KorbitWebsocketApi(ABC):
           TimeoutError – if the opening handshake times out.
           ConnectionClosed – when the connection is closed.
         """
-        async for self.ws in websockets.connect(self.ws_uri):
+        while True:
+            try:
+                self.ws = await websockets.connect(self.ws_uri)
+            except asyncio.exceptions.CancelledError:
+                logging.error("Reconnecting after asyncio.exceptions.CancelledError")
+                continue
+            except asyncio.exceptions.TimeoutError:
+                logging.error("Reconnecting after asyncio.exceptions.TimeoutError")
+                continue
+
             try:
                 await KorbitWebsocketApi._test_event_response(
                     self.ws,
