@@ -36,11 +36,15 @@ cp .env.example .env
 
 ### `pykorbit.KorbitAuthenticationApi`
 
-#### `pykorbit.KorbitAuthenticationApi.issue_access_token(client_id: str, client_secret: str) -> Dict[str, str]`
+### Issue access token
 
 https://apidocs.korbit.co.kr/#direct-authentication
 
-##### Response
+```python
+pykorbit.KorbitAuthenticationApi.issue_access_token(client_id: str, client_secret: str) -> Dict[str, str]
+```
+
+#### Response
 
 ```json
 {
@@ -52,11 +56,15 @@ https://apidocs.korbit.co.kr/#direct-authentication
 }
 ```
 
-#### `pykorbit.KorbitAuthenticationApi.renew_access_token(self, client_id: str, client_secret: str, refresh_token: str) -> Dict[str, str]`
+### Renew access token
 
 https://apidocs.korbit.co.kr/#refreshing-access-token
 
-##### Response
+```python
+pykorbit.KorbitAuthenticationApi.renew_access_token(self, client_id: str, client_secret: str, refresh_token: str) -> Dict[str, str]
+```
+
+#### Response
 
 ```json
 {
@@ -73,11 +81,15 @@ https://apidocs.korbit.co.kr/#refreshing-access-token
 
 https://apidocs.korbit.co.kr/#private-wallet
 
-#### `pykorbit.KorbitWalletApi.view_transfers(access_token: str, currency: Optional[str] = None, type: Optional[str] = None, offset: int = 0, limit: int = 40,) -> List[Dict]`
+### View transfers
 
 https://apidocs.korbit.co.kr/#view-transfers
 
-##### Response
+```python
+pykorbit.KorbitWalletApi.view_transfers(access_token: str, currency: Optional[str] = None, type: Optional[str] = None, offset: int = 0, limit: int = 40,) -> List[Dict]
+```
+
+#### Response
 
 ```json
 [
@@ -98,11 +110,15 @@ https://apidocs.korbit.co.kr/#view-transfers
 ]
 ```
 
-#### `pykorbit.KorbitWalletApi.query_status_of_deposit_and_withdrawal(access_token: str, currency: str, request_id: Optional[int] = None,) -> List[Dict]`
+### Query status of deposit and withdrawal
 
 https://apidocs.korbit.co.kr/#query-status-of-deposit-and-withdrawal
 
-##### Response
+```python
+pykorbit.KorbitWalletApi.query_status_of_deposit_and_withdrawal(access_token: str, currency: str, request_id: Optional[int] = None,) -> List[Dict]
+```
+
+#### Response
 
 ```json
 [
@@ -117,11 +133,15 @@ https://apidocs.korbit.co.kr/#query-status-of-deposit-and-withdrawal
 ]
 ```
 
-#### `pykorbit.KorbitWalletApi.user_balances(access_token: str) -> Dict[str, Any]`
+### User balances
 
 https://apidocs.korbit.co.kr/#user-balances
 
-##### Response
+```python
+pykorbit.KorbitWalletApi.user_balances(access_token: str) -> Dict[str, Any]
+```
+
+#### Response
 
 ```json
 {
@@ -141,11 +161,15 @@ https://apidocs.korbit.co.kr/#user-balances
 }
 ```
 
-#### `pykorbit.KorbitWalletApi.transfer_account_info(access_token: str) -> Dict[str, Any]`
+### Transfer account info
 
 https://apidocs.korbit.co.kr/#transfer-account-info
 
-##### Response
+```python
+pykorbit.KorbitWalletApi.transfer_account_info(access_token: str) -> Dict[str, Any]
+```
+
+#### Response
 
 ```json
 {
@@ -164,11 +188,15 @@ https://apidocs.korbit.co.kr/#transfer-account-info
 }
 ```
 
-#### `pykorbit.KorbitWalletApi.trading_volume_and_fees(access_token: str, pair: List[str] = []) -> Dict[str, Any]`
+###  Trading volume and fees
 
 https://apidocs.korbit.co.kr/#trading-volume-and-fees
 
-##### Response
+```python
+pykorbit.KorbitWalletApi.trading_volume_and_fees(access_token: str, pair: List[str] = []) -> Dict[str, Any]
+```
+
+#### Response
 
 ```json
 {
@@ -190,11 +218,15 @@ https://apidocs.korbit.co.kr/#trading-volume-and-fees
 
 ### `pykorbit.KorbitRestApi`
 
-#### `pykorbit.KorbitRestApi.ticker(currency_pair: str) -> Dict[str, Any]`
+### Ticker
 
 https://apidocs.korbit.co.kr/#ticker
 
-##### Response
+```python
+pykorbit.KorbitRestApi.ticker(currency_pair: str) -> Dict[str, Any]
+```
+
+#### Response
 
 ```json
 {
@@ -203,11 +235,15 @@ https://apidocs.korbit.co.kr/#ticker
 }
 ```
 
-#### `pykorbit.KorbitRestApi.detailed_ticker(currency_pair: str) -> Dict[str, Any]`
+### Detailed ticker
 
 https://apidocs.korbit.co.kr/#detailed-ticker
 
-##### Response
+```python
+pykorbit.KorbitRestApi.detailed_ticker(currency_pair: str) -> Dict[str, Any]
+```
+
+#### Response
 
 ```json
 {
@@ -224,11 +260,15 @@ https://apidocs.korbit.co.kr/#detailed-ticker
 }
 ```
 
-#### `pykorbit.KorbitRestApi.orderbook(currency_pair: str) -> Dict[str, Any]`
+### Orderbook
 
 https://apidocs.korbit.co.kr/#orderbook
 
-##### Response
+```python
+pykorbit.KorbitRestApi.orderbook(currency_pair: str) -> Dict[str, Any]
+```
+
+#### Response
 
 ```json
 {
@@ -238,11 +278,15 @@ https://apidocs.korbit.co.kr/#orderbook
 }
 ```
 
-#### `pykorbit.KorbitRestApi.list_of_filled_orders(currency_pair: str, time: str = "hour") -> List[Dict]`
+### List of filled orders
 
 https://apidocs.korbit.co.kr/#list-of-filled-orders
 
-##### Response
+```python
+pykorbit.KorbitRestApi.list_of_filled_orders(currency_pair: str, time: str = "hour") -> List[Dict]
+```
+
+#### Response
 
 ```json
 [
@@ -264,39 +308,76 @@ https://apidocs.korbit.co.kr/#list-of-filled-orders
 ]
 ```
 
-#### `pykorbit.KorbitRestApi.constants() -> Dict`
+### Constants (deprecated)
 
 https://apidocs.korbit.co.kr/#constants-deprecated
 
-DEPRECATED
+```python
+pykorbit.KorbitRestApi.constants() -> Dict
+```
 
-#### `pykorbit.KorbitRestApi.currency_pairs() -> List[str]`
+### Currency pairs
+
+```python
+pykorbit.KorbitRestApi.currency_pairs() -> List[str]
+```
 
 Get all currency pairs that can be traded.
-
 
 ### `pykorbit.KorbitWebsocketApi`
 
 Abstract class for subcribing to Korbit's channels.
 
-### `pykorbit.KorbitWebsocketApi.__init__(self, logging_level: Optional[str] = None)`
+```python
+pykorbit.KorbitWebsocketApi.__init__(self, logging_level: Optional[str] = None)
+```
 
-#### `async pykorbit.KorbitWebsocketApi.connect_and_subscribe_ticker(self, pairs: List[str]) -> None`
+### Connect and subscribe ticker
 
-#### `async pykorbit.KorbitWebsocketApi.connect_and_subscribe_orderbook(self, pairs: List[str]) -> None`
+```python
+async pykorbit.KorbitWebsocketApi.connect_and_subscribe_ticker(self, pairs: List[str]) -> None
+```
 
-#### `async pykorbit.KorbitWebsocketApi.connect_and_subscribe_transaction(self, pairs: List[str]) -> None`
+### Connect and subscribe orderbook
 
-#### `async pykorbit.KorbitWebsocketApi.connect_and_subscribe(self, channels: List[str]) -> None`
+```python
+async pykorbit.KorbitWebsocketApi.connect_and_subscribe_orderbook(self, pairs: List[str]) -> None
+```
 
-#### `async pykorbit.KorbitWebsocketApi.subscribe(self, channels: List[str]) -> None`
+### Connect and subscribe transaction
 
-#### `async pykorbit.KorbitWebsocketApi.unsubscribe(self, channels: List[str]) -> None`
+```python
+async pykorbit.KorbitWebsocketApi.connect_and_subscribe_transaction(self, pairs: List[str]) -> None
+```
 
-#### `async pykorbit.KorbitWebsocketApi.receive_loop(self) -> None`
+### Connect and subscribe
 
-#### `async pykorbit.KorbitWebsocketApi.receive_loop(self) -> None`
+```python
+async pykorbit.KorbitWebsocketApi.connect_and_subscribe(self, channels: List[str]) -> None
+```
 
-#### `async pykorbit.KorbitWebsocketApi.worker(msg: str) -> None`
+### Subscribe
+
+```python
+async pykorbit.KorbitWebsocketApi.subscribe(self, channels: List[str]) -> None
+```
+
+### Unsubscribe
+
+```python
+async pykorbit.KorbitWebsocketApi.unsubscribe(self, channels: List[str]) -> None
+```
+
+### Receive loop
+
+```python
+async pykorbit.KorbitWebsocketApi.receive_loop(self) -> None
+```
+
+### Worker
+
+```python
+async pykorbit.KorbitWebsocketApi.worker(msg: str) -> None
+```
 
 Abstract static method.
