@@ -4,16 +4,6 @@ Python wrapper for Korbit's REST/WS API
 
 ## Installation
 
-### Development
-
-```shell
-pip install -e .
-```
-
-### Production
-
-TODO: Setup own PyPI repository.
-
 ```shell
 pip install .
 ```
